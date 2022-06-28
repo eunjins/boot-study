@@ -1,7 +1,6 @@
 package kr.co.boot.study.access;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,10 +10,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 @Controller
 public class AccessController {
-    private static final Logger logger = LogManager.getLogger(AccessController.class);
-
     @Autowired
     AccessService accessService;
 
@@ -31,7 +29,7 @@ public class AccessController {
         try {
             userInfo = accessService.getManager();
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
 
         if (user.getId().equals(userInfo.getId())

@@ -1,10 +1,8 @@
 package kr.co.boot.study.device;
 
-import kr.co.boot.study.management.ManagementService;
 import kr.co.boot.study.util.Navigator;
 import kr.co.boot.study.util.StatusCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,20 +13,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/devices")
 public class DeviceController {
-    private static final Logger logger = LogManager.getLogger(DeviceController.class);
-
     @Autowired
     private StatusCode statusCode;
 
     @Autowired
     private DeviceService deviceService;
-
-    @Autowired
-    private ManagementService managementService;
 
     @Autowired
     private Navigator navigator;
@@ -93,7 +86,7 @@ public class DeviceController {
         try {
             deviceService.editDevice(device);
         } catch (Exception e) {
-            logger.error("                   OVERLAP NAME ERROR : " + e.getMessage());
+            log.error("                   OVERLAP NAME ERROR : " + e.getMessage());
         }
 
         mav = new ModelAndView(new RedirectView("/devices/" + device.getId()));
@@ -104,11 +97,11 @@ public class DeviceController {
     @PostMapping("/data")
     public Map<String, String> receiveDevice(
             @RequestBody Device device, HttpServletResponse httpServletResponse) {
-        logger.info("                   SUCCESSFUL RECEIVE DEVICE INFORMATION");
-        logger.info("      Device ID   :   " + device.getId());
-        logger.info("      Host Name   :   " + device.getHostName());
-        logger.info("      IP Address  :   " + device.getIpAddress());
-        logger.info("      JDK Version :   " + device.getJdkVersion());
+        log.info("                   SUCCESSFUL RECEIVE DEVICE INFORMATION");
+        log.info("      Device ID   :   " + device.getId());
+        log.info("      Host Name   :   " + device.getHostName());
+        log.info("      IP Address  :   " + device.getIpAddress());
+        log.info("      JDK Version :   " + device.getJdkVersion());
 
         int code = httpServletResponse.getStatus();
         String message = statusCode.getStatusRepository().get(code);

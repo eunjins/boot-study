@@ -8,10 +8,9 @@ import kr.co.boot.study.measure.MeasureService;
 import kr.co.boot.study.util.ExcelUtil;
 import kr.co.boot.study.util.Navigator;
 import kr.co.boot.study.util.StatusCode;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +26,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/scripts")
 public class ScriptController {
-    private static final Logger logger = LogManager.getLogger(ScriptController.class);
     public static int distributeCount;
 
     @Value("${scriptPath}")
@@ -185,7 +184,7 @@ public class ScriptController {
         if (script.getNo() < 1) {
             mav = new ModelAndView(new RedirectView("/scripts"));
 
-            logger.error("           THERE IS NOT SCRIPT OF NO            ");
+            log.error("           THERE IS NOT SCRIPT OF NO            ");
         }
 
         mav.addObject("script", scriptService.getScript(script));
@@ -320,11 +319,11 @@ public class ScriptController {
                 measure.setDistributeStatus("Y");
                 measureService.registerMeasure(measure);
                 int leftDevice =  --distributeCount;
-                logger.info("                    SUCCESSFUL RECEIVE MEASURE !                       ");
-                logger.info("                    RUNNING DEVICES :  " + leftDevice                   );
-                logger.info("                                                                       ");
+                log.info("                    SUCCESSFUL RECEIVE MEASURE !                       ");
+                log.info("                    RUNNING DEVICES :  " + leftDevice                   );
+                log.info("                                                                       ");
             } else {
-                logger.error("                   OVERLAP DEVICE INFORMATION ERROR                   ");
+                log.error("                   OVERLAP DEVICE INFORMATION ERROR                   ");
             }
         } else {
             responseData.put("message", "수신 데이터가 존재하지 않습니다.");
