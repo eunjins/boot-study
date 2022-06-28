@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.boot.study.measure.MeasureRepository">
+    <select id="selectAll"
+            parameterType="measure"
+            resultType="measure">
+        SELECT no
+             , measure.name
+             , deviceId
+             , scriptNo
+             , execTime
+             , measure.status
+             , distributeStatus
+        FROM measure INNER JOIN device
+        ON measure.deviceId = device.id
+        <where>
+            <if test="scriptNo > 0">
+                AND scriptNo = #{scriptNo}
+            </if>
+            <if test="name != null and name != ''">
+                AND measure.name LIKE '%${name}%'
+            </if>
+        </where>
+        ORDER BY device.name
+    </select>
+
+    <select id="select"
+            parameterType="measure"
+            resultType="measure">
+        SELECT no
+             , name
+             , deviceId
+             , scriptNo
+             , execTime
+             , status
+             , distributeStatus
+        FROM measure
+        <where>
+            <if test="no > 0">
+                AND no = #{no}
+            </if>
+            <if test="deviceId != null and deviceId != ''">
+                AND deviceId = #{deviceId}
+            </if>
+            <if test="scriptNo != null and scriptNo != ''">
+                AND scriptNo = #{scriptNo}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert"
+            parameterType="measure">
+        INSERT INTO measure
+            (name, deviceId, scriptNo, execTime, status, distributeStatus)
+        VALUES
+            (#{name}, #{deviceId}, #{scriptNo}, #{execTime}, #{status}, #{distributeStatus})
+    </insert>
+</mapper>

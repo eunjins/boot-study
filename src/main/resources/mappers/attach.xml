@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.boot.study.script.AttachRepository">
+    <select id="select"
+            parameterType="attach"
+            resultType="attach">
+        SELECT no
+             , division
+             , name
+             , physicName
+             , scriptName
+        FROM attach
+        <where>
+            <if test="no > 0">
+                AND no = #{no}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAll"
+            parameterType="attach"
+            resultType="attach">
+        SELECT no
+             , division
+             , name
+             , physicName
+             , scriptName
+        FROM attach
+        <where>
+            <if test="scriptNo > 0">
+                AND scriptNo = #{scriptNo}
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="insert"
+            parameterType="attach">
+        INSERT INTO attach
+            (division, name, physicName, scriptNo)
+        VALUES
+            (#{division}, #{name}, #{physicName}, #{scriptNo})
+    </insert>
+</mapper>

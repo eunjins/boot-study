@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.boot.study.script.ScriptRepository">
+    <select id="selectAll"
+            parameterType="Map"
+            resultType="script">
+        SELECT no
+             , name
+             , uploadPoint
+        FROM script
+        <where>
+            <if test="name != null and name != ''">
+                AND name LIKE '%${name}%'
+            </if>
+            <if test="uploadPoint != null and uploadPoint != ''">
+                AND DATE(uploadPoint)= #{uploadPoint}
+            </if>
+            <if test="measureName != null and measureName != ''">
+                AND no IN (SELECT scriptNo FROM measure WHERE name LIKE '%${measureName}%')
+            </if>
+        </where>
+        ORDER BY uploadPoint DESC
+        <if test="pageNo != null and pageNo != ''">
+            LIMIT ${pageNo}, 10
+        </if>
+    </select>
+
+    <select id="select"
+            parameterType="script"
+            resultType="script">
+        SELECT no
+             , name
+             , uploadPoint
+        FROM script
+        <where>
+            <if test="no > 0">
+                AND no = #{no}
+            </if>
+        </where>
+        ORDER BY uploadPoint DESC
+    </select>
+
+    <insert id="insert"
+            parameterType="script">
+        INSERT INTO script
+            (name, uploadPoint)
+        VALUES
+            (#{name}, #{uploadPoint})
+        <selectKey keyProperty="no" resultType="int" order="AFTER">
+            SELECT last_insert_id()
+        </selectKey>
+    </insert>
+</mapper>

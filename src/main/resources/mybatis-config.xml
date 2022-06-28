@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="callSettersOnNulls" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="useGeneratedKeys" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="kr.co.boot.study.script.Attach" alias="attach"/>
+        <typeAlias type="kr.co.boot.study.device.Device" alias="device"/>
+        <typeAlias type="kr.co.boot.study.measure.Measure" alias="measure"/>
+        <typeAlias type="kr.co.boot.study.script.Script" alias="script"/>
+    </typeAliases>
+
+    <mappers>
+        <mapper resource="mappers/attach.xml"/>
+        <mapper resource="mappers/device.xml"/>
+        <mapper resource="mappers/measure.xml"/>
+        <mapper resource="mappers/script.xml"/>
+    </mappers>
+</configuration>

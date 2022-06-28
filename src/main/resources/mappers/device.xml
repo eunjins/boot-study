@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.boot.study.device.DeviceRepository">
+    <select id="selectAll"
+            parameterType="Map"
+            resultType="device">
+        SELECT id
+             , name
+             , hostName
+             , ipAddress
+             , insertDate
+             , jdkVersion
+             , status
+        FROM device
+        <where>
+            <if test="name != null and name != ''">
+                AND NAME LIKE '%${name}%'
+            </if>
+            <if test="insertDate != null and insertDate != ''">
+                AND insertDate = DATE_FORMAT(#{insertDate}, '%Y-%m-%d')
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY NAME
+        <if test="pageNo != null and pageNo != ''">
+            LIMIT ${pageNo}, 10
+        </if>
+    </select>
+
+    <select id="select"
+            parameterType="device"
+            resultType="device">
+        SELECT id
+             , name
+             , hostName
+             , ipAddress
+             , insertDate
+             , jdkVersion
+             , status
+        FROM device
+        <where>
+            <if test="id != null and id != ''">
+                AND id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert"
+            parameterType="device">
+        INSERT INTO device
+            (id, name, hostName, ipAddress, insertDate, jdkVersion)
+        VALUES
+            (#{id}, #{name}, #{hostName}, #{ipAddress}, #{insertDate}, #{jdkVersion})
+    </insert>
+
+    <update id="update"
+            parameterType="device">
+        UPDATE device
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="ipAddress != null and ipAddress != ''">
+                ipAddress = #{ipAddress},
+            </if>
+            <if test="hostName != null and hostName != ''">
+                hostName = #{hostName},
+            </if>
+            <if test="jdkVersion != null and jdkVersion != ''">
+                jdkVersion = #{jdkVersion},
+            </if>
+        </set>
+        <where>
+            <if test="id != null and id != ''">
+                AND id = #{id}
+            </if>
+        </where>
+    </update>
+</mapper>
